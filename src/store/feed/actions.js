@@ -1,6 +1,18 @@
 import axios from "axios";
+import { API_URL } from "../../config";
 
-const API_URL = `https://codaisseur-coders-network.herokuapp.com`;
+export function startLoading() {
+  return {
+    type: "LOADING_PAGES",
+  };
+}
+
+export function postsFetched(listOfPosts) {
+  return {
+    type: "FETCHED_PAGES",
+    payload: listOfPosts,
+  };
+}
 
 export async function fetchNext5Posts(dispatch, getState) {
   dispatch(startLoading());
@@ -10,19 +22,8 @@ export async function fetchNext5Posts(dispatch, getState) {
   const res = await axios.get(`${API_URL}/posts?offset=${offset}&limit=5`);
 
   const morePosts = res.data.rows;
+  console.log("Whatsthis", morePosts);
+  console.log("AAndthis?", res.data);
 
   dispatch(postsFetched(morePosts));
-}
-
-export function startLoading() {
-  return {
-    type: "LOADING_POSTS",
-  };
-}
-
-export function postsFetched(listOfPosts) {
-  return {
-    type: "FETCHED_POSTS",
-    payload: listOfPosts,
-  };
 }
